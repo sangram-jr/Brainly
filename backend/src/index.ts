@@ -90,6 +90,66 @@ app.post("/api/v1/content", userMiddleware, async (req, res) => {
 
 
 
+//get content
+app.get("/api/v1/content", userMiddleware, async (req, res) => {
+  try {
+    if (!req.userId) {
+      return res.status(403).json({
+        message: "Unauthorized"
+      });
+    }
+
+    const content = await ContentModel.find({
+      userId: req.userId
+    }).populate("userId", "username");
+
+    return res.status(200).json({
+      content
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      message: "Something went wrong"
+    });
+  }
+});
+
+
+
+//delete content
+app.delete("/api/v1/content", userMiddleware, async (req, res) => {
+  try {
+    const contentId = req.body.contentId;
+
+    if (!contentId) {
+      return res.status(400).json({
+        message: "Content ID required"
+      });
+    }
+
+    if (!req.userId) {
+      return res.status(403).json({
+        message: "Unauthorized"
+      });
+    }
+
+    await ContentModel.deleteOne({
+      _id: contentId,
+      userId: req.userId
+    });
+
+    return res.status(200).json({
+      message: "Deleted successfully"
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      message: "Something went wrong"
+    });
+  }
+});
+
+
 app.listen(3000, () => {
   console.log("Server running on port 3000");
 });
