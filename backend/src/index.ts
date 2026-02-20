@@ -1,5 +1,12 @@
 import express from "express";
-import { UserModel } from "./db.js";
+import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
+import { userMiddleware } from "./middleware.js";
+import { UserModel,ContentModel } from "./db.js";
+
+import dotenv from "dotenv"
+dotenv.config();
+const JWT_PASSWORD=process.env.JWT_PASSWORD as string;
 
 const app = express();
 app.use(express.json());
@@ -34,6 +41,51 @@ app.post("/api/v1/signup", async (req, res) => {
             message: "User already exists"
         })
     }
+})
+
+//signin endpoint
+app.post("/api/v1/signin", async (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+
+    const existingUser = await UserModel.findOne({
+        username,
+        password
+    })
+    if (existingUser) {
+        const token = jwt.sign({
+            id: existingUser._id
+        }, JWT_PASSWORD)
+
+        res.json({
+            token
+        })
+    } else {
+        res.status(403).json({
+            message: "Incorrrect credentials"
+        })
+    }
+})
+
+
+
+//content generation endpoint
+app.post("/api/v1/content", userMiddleware, async (req, res) => {
+    const link = req.body.link;
+    const type = req.body.type;
+    const title=req.body.title;
+    await ContentModel.create({
+        link:link,
+        type:type,
+        title:title,
+        userId:  new mongoose.Types.ObjectId(req.userId), //  convert to ObjectId,
+        tags: []
+    })
+
+    res.json({
+        message: "Content added"
+    })
+    
 })
 
 
