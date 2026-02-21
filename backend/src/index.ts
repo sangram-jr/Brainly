@@ -159,7 +159,7 @@ app.post('/api/v1/brain/share',userMiddleware, async(req,res)=>{
     }
 
     const share=req.body.share;
-    if(share){
+    if(share===true){
 
       const existingLink=await LinkModel.findOne({
         userId: req.userId
@@ -204,7 +204,7 @@ app.get('/api/v1/brain/:shareLink',async (req,res)=>{
     res.json({message:"link not found"});
     return;
   }
-  
+
   //find content
   const content=await ContentModel.findOne({
     userId:link.userId
