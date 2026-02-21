@@ -2,9 +2,11 @@ import express from "express";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import { userMiddleware } from "./middleware.js";
-import { UserModel,ContentModel } from "./db.js";
+import { UserModel,ContentModel, LinkModel } from "./db.js";
 
 import dotenv from "dotenv"
+import { random } from "./utils.js";
+
 dotenv.config();
 const JWT_PASSWORD=process.env.JWT_PASSWORD as string;
 
@@ -148,6 +150,47 @@ app.delete("/api/v1/content", userMiddleware, async (req, res) => {
     });
   }
 });
+
+//generate link
+app.post('/api/v1/brain/share',userMiddleware, async(req,res)=>{
+  try {
+    if(!req.userId){
+      return res.status(403).json({message:"Unauthorize"})
+    }
+
+    const share=req.body.share;
+    if(share){
+
+      const existingLink=await LinkModel.findOne({
+        userId: req.userId
+      })
+      if(existingLink){
+        res.json({hash:existingLink.hash});
+        return;
+      }
+      const hash=random(10);
+      await LinkModel.create({
+        userId: req.userId,
+        hash: hash
+      })
+      res.json({hash})
+
+    }else{
+
+      await LinkModel.deleteOne({
+        userId: new mongoose.Types.ObjectId(req.userId)
+      })
+      res.status(401).json({message:"link deleted successfully"})
+    }
+
+  } catch (error) {
+
+    return res.status(500).json({
+      message: "Something went wrong"
+    });
+  }
+})
+
 
 
 app.listen(3000, () => {
