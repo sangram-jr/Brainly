@@ -1,11 +1,15 @@
+import { Button } from "./components/Button"
+import { PlusIcon } from "./icons/PlusIcon"
+import { ShareIcon } from "./icons/ShareIcon"
 
 
 
 function App() {
   
   return (
-    <div className="bg-red-500">
-      hey , i am sangram!
+    <div>
+      <Button variant="primary" text="Add Content" startIcon={<PlusIcon />}/>
+      <Button variant="secondary" text="Share Brain" startIcon={<ShareIcon />}/>
     </div>
       
   )
