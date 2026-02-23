@@ -1,17 +1,20 @@
 import express from "express";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
+import cors from "cors"
 import { userMiddleware } from "./middleware.js";
 import { UserModel,ContentModel, LinkModel } from "./db.js";
 
 import dotenv from "dotenv"
 import { random } from "./utils.js";
 
+
 dotenv.config();
 const JWT_PASSWORD=process.env.JWT_PASSWORD as string;
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 
 

@@ -1,11 +1,18 @@
+
+import type { Ref } from "react";
 //create reuseable input field
 interface InputProps{
-    onChange:()=> void,
-    placeholder:string
+    placeholder:string,
+    reference?:Ref<HTMLInputElement>
 }
 
-export function Input({onChange,placeholder}:InputProps){
+export function Input({placeholder,reference}:InputProps){
     return <div>
-        <input placeholder={placeholder} type={'text'} onChange={onChange} className="px-4 py-2 m-2 rounded border border-gray-200"/>
+        <input 
+            placeholder={placeholder} 
+            ref={reference} 
+            type={'text'}  
+            className="px-4 py-2 m-2 rounded border border-gray-200"
+        />
     </div>
 }
