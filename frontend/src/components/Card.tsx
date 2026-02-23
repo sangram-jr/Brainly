@@ -1,7 +1,7 @@
 import { DeleteIcon } from "../icons/DeleteIcon";
 import {YoutubeIcon } from "../icons/YoutubeIcon";
-import { ShareIcon } from "../icons/ShareIcon";
 import { TwitterIcon } from "../icons/TwitterIcon";
+import { WatchIcon } from "../icons/WatchIcon";
 
 interface CardProps{
     title:string,
@@ -22,7 +22,7 @@ export function Card({title,link,type}:CardProps){
                 <div className="flex items-center">
                     <div className="pr-2 text-gray-500">
                         <a href={link} target="_blank"> {/*when user click to the shareIcon, then open the link into new tab  */}
-                            <ShareIcon/>
+                            <WatchIcon/>
                         </a>
                     </div>
                     <div className="text-gray-500">
