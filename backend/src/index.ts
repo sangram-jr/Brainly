@@ -209,7 +209,7 @@ app.get('/api/v1/brain/:shareLink',async (req,res)=>{
   }
 
   //find content
-  const content=await ContentModel.findOne({
+  const content=await ContentModel.find({
     userId:link.userId
   })
 
