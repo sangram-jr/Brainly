@@ -52,7 +52,10 @@ function Dashboard() {
                   }
                 });
                 const shareUrl = `http://localhost:5173/share/${response.data.hash}`;
-                alert(shareUrl);
+
+                //copy the url to clipboard
+                await navigator.clipboard.writeText(shareUrl);
+                alert("Link copied to clipboard!");
               }}
             /> 
         </div>
