@@ -2,6 +2,17 @@ import { DeleteIcon } from "../icons/DeleteIcon";
 import {YoutubeIcon } from "../icons/YoutubeIcon";
 import { TwitterIcon } from "../icons/TwitterIcon";
 import { WatchIcon } from "../icons/WatchIcon";
+import { useEffect } from "react";
+
+declare global {
+  interface Window {
+    twttr?: {
+      widgets: {
+        load: () => void;
+      };
+    };
+  }
+}
 
 interface CardProps{
     id:string,
@@ -12,6 +23,13 @@ interface CardProps{
 }
 
 export function Card({id,title,link,type,onDelete}:CardProps){
+
+    useEffect(() => {
+    if (type === "twitter" && window.twttr) {
+        window.twttr.widgets.load();
+    }
+    }, [link, type]);
+
     return <div>
         <div className="bg-white border border-gray-200 rounded-md max-w-72 p-4 min-h-48 min-w-72">
             <div className="flex justify-between">
