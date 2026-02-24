@@ -122,9 +122,9 @@ app.get("/api/v1/content", userMiddleware, async (req, res) => {
 
 
 //delete content
-app.delete("/api/v1/content", userMiddleware, async (req, res) => {
+app.delete("/api/v1/content/:id", userMiddleware, async (req, res) => {
   try {
-    const contentId = req.body.contentId;
+    const contentId = req.params.id;
 
     if (!contentId) {
       return res.status(400).json({

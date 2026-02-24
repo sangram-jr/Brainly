@@ -4,12 +4,14 @@ import { TwitterIcon } from "../icons/TwitterIcon";
 import { WatchIcon } from "../icons/WatchIcon";
 
 interface CardProps{
+    id:string,
     title:string,
     link:string,
     type:"youtube"|"twitter"
+    onDelete:(id:string)=>void
 }
 
-export function Card({title,link,type}:CardProps){
+export function Card({id,title,link,type,onDelete}:CardProps){
     return <div>
         <div className="bg-white border border-gray-200 rounded-md max-w-72 p-4 min-h-48 min-w-72">
             <div className="flex justify-between">
@@ -25,7 +27,7 @@ export function Card({title,link,type}:CardProps){
                             <WatchIcon/>
                         </a>
                     </div>
-                    <div className="text-gray-500">
+                    <div className="text-gray-500 cursor-pointer" onClick={()=>onDelete(id)}>
                         <DeleteIcon/>
                     </div>
                     

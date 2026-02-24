@@ -13,7 +13,17 @@ import { BACKEND_URL } from "../config"
 
 function Dashboard() {
   const [openModel,setOpenModal]=useState(false);
-  const contents=useContent();
+  const {contents,refresh}=useContent();
+
+  //delete card api call
+  async function handleDelete(id:string){
+    await axios.delete(`${BACKEND_URL}/api/v1/content/${id}`,{
+      headers:{
+        "Authorization":`Bearer ${localStorage.getItem("token")}`
+      }
+    });
+    refresh(); 
+  }
 
   
 
@@ -52,9 +62,11 @@ function Dashboard() {
             contents.map(({title,link,type,_id})=>
             <Card 
               key={_id}
+              id={_id}
               title={title} 
               link={link} 
               type={type}
+              onDelete={handleDelete}
             />)
           }
           
